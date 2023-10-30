@@ -38,6 +38,7 @@ com_crashlytics_export_strings.xml
 /android/bin/
 /core/bin/
 /desktop/bin/
+/lwjgl3/bin/
 /html/bin/
 /ios/bin/
 *.tmp
@@ -98,6 +99,7 @@ gradle-app.setting
 /android/build/
 /core/build/
 /desktop/build/
+/lwjgl3/build/
 /html/build/
 /ios/build/
 

@@ -1,7 +1,8 @@
-package cz.libors.particlelife;
+package cz.libors.particlelife.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import cz.libors.particlelife.ParticleLife;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

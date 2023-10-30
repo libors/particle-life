@@ -2,12 +2,16 @@ package cz.libors.particlelife
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Interpolation
 import kotlin.math.min
 
-class WorldController(val cam: OrthographicCamera) : InputAdapter() {
+class WorldController(
+    private val cam: OrthographicCamera,
+    private val settings: Settings
+) : InputAdapter() {
 
     private var moving = false
     private val zooming = Zooming(cam)
@@ -24,11 +28,17 @@ class WorldController(val cam: OrthographicCamera) : InputAdapter() {
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        moving = true
+        if (button == Buttons.LEFT && settings.handOfGod.enabled) {
+            HandOfGod.pressing = true
+            HandOfGod.update(screenX, screenY, cam)
+        } else {
+            moving = true
+        }
         return true
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        HandOfGod.pressing = false
         moving = false
         return true
     }
@@ -39,6 +49,9 @@ class WorldController(val cam: OrthographicCamera) : InputAdapter() {
             val y = Gdx.input.deltaY.toFloat()
             cam.translate(-x * cam.zoom, y * cam.zoom)
 
+        }
+        if (HandOfGod.pressing) {
+            HandOfGod.update(screenX, screenY, cam)
         }
         return true
     }
@@ -63,6 +76,17 @@ class WorldController(val cam: OrthographicCamera) : InputAdapter() {
                     sizeBeforeFs = Pair(Gdx.graphics.width, Gdx.graphics.height)
                     Gdx.graphics.setFullscreenMode(displayMode)
                 }
+                return true
+            }
+
+            Input.Keys.ENTER, Input.Keys.NUMPAD_ENTER -> {
+                ParticleLife.updateParticles { ParticleGenerator.createParticles(settings) }
+                return true
+            }
+
+            Input.Keys.R -> {
+                ParticleTypesConfigurer.generateMatrices(settings.particleSetup, settings.physics)
+                ParticleLife.updateParticles { ParticleGenerator.createParticles(settings) }
                 return true
             }
 
