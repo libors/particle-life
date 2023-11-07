@@ -8,7 +8,7 @@ import kotlin.math.min
 class Zooming(
     private val cam: OrthographicCamera,
     private val periodMs: Int = 300,
-    private val step: Float = 0.1f,
+    private val step: Float = 0.5f,
     private val max: Float = 0.02f,
     private val min: Float = 1f
 ) {
@@ -27,7 +27,7 @@ class Zooming(
 
     fun change(amount: Float) {
         if (amount == 0f) return
-        val delta = amount * step
+        val delta = amount * step * cam.zoom
         val now = System.currentTimeMillis()
         val allowed = if (amount < 0) max - cam.zoom else min - cam.zoom
         val d = if (amount < 0) max(delta, allowed) else min(delta, allowed)

@@ -24,7 +24,7 @@ class ParticleDrawer(input: InputMultiplexer, val settings: Settings) {
     }
 
     fun draw(particles: List<Particle>) {
-        val circleSegments = 10
+        val circleSegments = 18
         controller.updateCamera()
         camera.update()
         shape.projectionMatrix = camera.combined
